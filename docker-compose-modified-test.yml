@@ -1,0 +1,60 @@
+version: '3.8'
+services:
+  db: 
+    image: mysql
+    environment: 
+      - MYSQL_ROOT_PASSWORD=Sumit@360
+      - MYSQL_DATABASE=endgame
+    networks:
+      - review_network
+    volumes: 
+      - mysqldb:/var/lib/mysql
+    restart: always
+    deploy: 
+      mode: replicated
+      replicas: 2
+    
+  adminer: 
+    image: adminer
+    restart: always
+    ports:
+      - 9090:8080
+    networks: 
+      - review_network
+    depends_on: 
+      - db
+    
+  frontend:
+    image: frontend:v2
+    build: 
+      context: ./frontend
+      dockerfile: Dockerfile-modified
+    networks:
+      - review_network
+    restart: always
+    environment:
+      - BACKEND_URL=http://backend-test:5000
+    ports:
+      - 80:5000
+    depends_on: 
+      - backend-test
+
+  backend-test:
+    image: backend:v2
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    networks: 
+      - review_network
+    environment: 
+      - DB_USER=admin
+      - DB_PASS=sumit360
+      - DB=endgame
+      - DB_HOST=database-1.c1waeq4gymb5.ap-south-1.rds.amazonaws.com
+    depends_on:
+      - db
+volumes: 
+  mysqldb: 
+
+networks:
+  review_network: {}  
