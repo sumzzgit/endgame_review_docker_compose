@@ -17,6 +17,7 @@ phases:
     - sudo yum install docker -y
   pre_build:
     commands:
+    - aws sts get-caller-identity
     - cd frontend
     - echo "------ building the docker images ------"
     - sudo docker build -t frontend -f Dockerfile-modified .
