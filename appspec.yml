@@ -9,8 +9,8 @@ Resources:
         ContainerPort: 5000
       NetworkConfiguration:
         AwsvpcConfiguration:
-        Subnets: ["subnet-01a95e27074f14893", "subnet-038f9d9434f495db3"]
-        SecurityGroups: ["sg-03293ead30161142f"]
-        AssignPublicIp: "ENABLED"
+          Subnets: ["subnet-01a95e27074f14893", "subnet-038f9d9434f495db3"]
+          SecurityGroups: ["sg-03293ead30161142f"]
+          # AssignPublicIp: "ENABLED"
 
 
