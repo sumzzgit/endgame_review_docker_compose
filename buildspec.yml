@@ -24,8 +24,8 @@ phases:
     - sudo docker tag frontend ${FRONTEND_REPO_URI}:latest
     - cd ../backend/
     - sudo docker build -t backend .
-    - sudo docker tag ${BACKEND_REPO_URI}:${CODEBUILD_BUILD_NUMBER}
-    - sudo docker tag ${BACKEND_REPO_URI}:latest
+    - sudo docker tag backend ${BACKEND_REPO_URI}:${CODEBUILD_BUILD_NUMBER}
+    - sudo docker tag backend ${BACKEND_REPO_URI}:latest
   build:
     commands:
     - echo "------ pushing docker images ------"
