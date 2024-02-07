@@ -1,0 +1,16 @@
+version: 0.0
+Resources:
+- TargetService:
+    Type: AWS::ECS::Service
+    properties:
+      TaskDefinition: "arn:aws:ecs:ap-south-1:533267334695:task-definition/frontend"
+      LoadBalancerInfo:
+        ContainerName: "frontend"
+        ContainerPort: 5000
+      NetworkConfiguration:
+        AwsvpcConfiguration:
+        Subnets: ["subnet-01a95e27074f14893", "subnet-038f9d9434f495db3"]
+        SecurityGroups: ["sg-03293ead30161142f"]
+        AssignPublicIp: "ENABLED"
+
+
