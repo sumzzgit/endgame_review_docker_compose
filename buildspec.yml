@@ -43,11 +43,11 @@ phases:
   post_build:
     commands:
     # - TASK_DEFINITION=$(aws ecs describe-task-definition --task-definition "${BACKEND_TASK_FAMILY}" --region "${REGION}")
-    # - NEW_TASK_DEFINITION=$(echo "$TASK_DEFINITION" | jq --arg IMAGE "${BACKEND_REPO_URI}" '.taskDefinition | .containerDefinitions[0].image = $IMAGE | del(.taskDefinitionArn) | del(.revision) | del(.status) | del(.requiresAttributes) | del(.compatibilities) | del(.registeredAt) | del(.registeredBy)')
+    # - NEW_TASK_DEFINITION=$(echo "$TASK_DEFINITION" | jq --arg IMAGE "${BACKEND_REPO_URI}:latest" '.taskDefinition | .containerDefinitions[0].image = $IMAGE | del(.taskDefinitionArn) | del(.revision) | del(.status) | del(.requiresAttributes) | del(.compatibilities) | del(.registeredAt) | del(.registeredBy)')
     # - aws ecs register-task-definition --region "${REGION}" --cli-input-json "$NEW_TASK_DEFINITION"
 
 
     - echo "------ changing the frontend task definition file ------"
     - TASK_DEFINITION=$(aws ecs describe-task-definition --task-definition "${FRONTEND_TASK_FAMILY}" --region "${REGION}")
-    - NEW_TASK_DEFINITION=$(echo "$TASK_DEFINITION" | jq --arg IMAGE "${FRONTEND_REPO_URI}" '.taskDefinition | .containerDefinitions[0].image = $IMAGE | del(.taskDefinitionArn) | del(.revision) | del(.status) | del(.requiresAttributes) | del(.compatibilities) | del(.registeredAt) | del(.registeredBy)')
+    - NEW_TASK_DEFINITION=$(echo "$TASK_DEFINITION" | jq --arg IMAGE "${FRONTEND_REPO_URI}:latest" '.taskDefinition | .containerDefinitions[0].image = $IMAGE | del(.taskDefinitionArn) | del(.revision) | del(.status) | del(.requiresAttributes) | del(.compatibilities) | del(.registeredAt) | del(.registeredBy)')
     - aws ecs register-task-definition --region "${REGION}" --cli-input-json "$NEW_TASK_DEFINITION"
