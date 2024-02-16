@@ -3,14 +3,25 @@ Resources:
 - TargetService:
     Type: AWS::ECS::Service
     properties:
-      TaskDefinition: "arn:aws:ecs:ap-south-1:533267334695:task-definition/frontend"
+      TaskDefinition: "arn:aws:ecs:ap-south-1:533267334695:task-definition/endgame-backend-terraform"
+      LoadBalancerInfo:
+        ContainerName: "backend"
+        ContainerPort: 5000
+      NetworkConfiguration:
+        AwsvpcConfiguration:
+          Subnets: ["subnet-093680dced0adfa3a", "subnet-05d321769ba6395e8"]
+          SecurityGroups: ["sg-0d5dd6502277d5724"]
+- TargetService:
+    Type: AWS::ECS::Service
+    properties:
+      TaskDefinition: "arn:aws:ecs:ap-south-1:533267334695:task-definition/endgame-frontend-terraform"
       LoadBalancerInfo:
         ContainerName: "frontend"
         ContainerPort: 5000
       NetworkConfiguration:
         AwsvpcConfiguration:
-          Subnets: ["subnet-01a95e27074f14893", "subnet-038f9d9434f495db3"]
-          SecurityGroups: ["sg-03293ead30161142f"]
+          Subnets: ["subnet-093680dced0adfa3a", "subnet-05d321769ba6395e8"]
+          SecurityGroups: ["sg-0d5dd6502277d5724"]
           # AssignPublicIp: "ENABLED"
 
 
