@@ -17,6 +17,8 @@ phases:
     - sudo yum install docker -y
   pre_build:
     commands:
+    - echo "------ logging into the python ecr repo ------"
+    - aws ecr get-login-password --region ap-south-1 |sudo docker login --username AWS --password-stdin 533267334695.dkr.ecr.ap-south-1.amazonaws.com
     - aws sts get-caller-identity
     - cd backend/
     - sudo docker build -t backend .
