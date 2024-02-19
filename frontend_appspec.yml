@@ -1,0 +1,16 @@
+version: 0.0
+Resources:
+- TargetService:
+    Type: AWS::ECS::Service
+    properties:
+      TaskDefinition: "arn:aws:ecs:ap-south-1:533267334695:task-definition/endgame-frontend-terraform"
+      LoadBalancerInfo:
+        ContainerName: "frontend"
+        ContainerPort: 5000
+      NetworkConfiguration:
+        AwsvpcConfiguration:
+          Subnets: ["subnet-0fce32bb4abbac90c", "subnet-01c9d71cc488f035d"]
+          SecurityGroups: ["sg-0bb15dfce8d0686ff"]
+          # AssignPublicIp: "ENABLED"
+
+

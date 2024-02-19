@@ -1,0 +1,40 @@
+version: 0.2
+env:
+  secrets-manager:
+    DB_USER: "endgame:db_user"
+    DB_PASS: "endgame:db_pass"
+    DB_HOST: "endgame:db_host"
+    DB: "endgame:db"
+    BACKEND_URL: "endgame:backend_url"
+    FRONTEND_REPO_URI: "endgame:fronted_repo_uri"
+    REGION: "endgame:region"
+    BACKEND_REPO_URI: "endgame:backend_repo_uri"
+    FRONTEND_TASK_FAMILY: "endgame:frontend_task_family"
+    BACKEND_TASK_FAMILY: "endgame:backend_task_family"
+phases:
+  install:
+    commands:
+    - sudo yum install docker -y
+  pre_build:
+    commands:
+    - aws sts get-caller-identity
+    - cd backend/
+    - sudo docker build -t backend .
+    - sudo docker tag backend ${BACKEND_REPO_URI}:${CODEBUILD_BUILD_NUMBER}
+    - sudo docker tag backend ${BACKEND_REPO_URI}:latest
+  build:
+    commands:
+    - echo "------ pushing docker images ------"
+    - aws ecr get-login-password --region ${REGION} |sudo docker login --username AWS --password-stdin ${BACKEND_REPO_URI}
+    - sudo docker push ${BACKEND_REPO_URI}:${CODEBUILD_BUILD_NUMBER}
+    - sudo docker push ${BACKEND_REPO_URI}:latest
+
+  post_build:
+    commands:
+     - TASK_DEFINITION=$(aws ecs describe-task-definition --task-definition "${BACKEND_TASK_FAMILY}" --region "${REGION}")
+     - NEW_TASK_DEFINITION=$(echo "$TASK_DEFINITION" | jq --arg IMAGE "${BACKEND_REPO_URI}:latest" '.taskDefinition | .containerDefinitions[0].image = $IMAGE | del(.taskDefinitionArn) | del(.revision) | del(.status) | del(.requiresAttributes) | del(.compatibilities) | del(.registeredAt) | del(.registeredBy)')
+     - aws ecs register-task-definition --region "${REGION}" --cli-input-json "$NEW_TASK_DEFINITION"
+     
+artifacts:
+  files:
+  - 'backend_appspec.yml'
