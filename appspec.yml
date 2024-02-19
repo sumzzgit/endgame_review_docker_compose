@@ -9,8 +9,8 @@ Resources:
         ContainerPort: 5000
       NetworkConfiguration:
         AwsvpcConfiguration:
-          Subnets: ["subnet-093680dced0adfa3a", "subnet-05d321769ba6395e8"]
-          SecurityGroups: ["sg-0d5dd6502277d5724"]
+          Subnets: ["subnet-0d6e3204117daa85e", "subnet-062f87d0cfba1b2f0"]
+          SecurityGroups: ["sg-0f31a62ffed0fbf3d"]
 - TargetService:
     Type: AWS::ECS::Service
     properties:
@@ -20,8 +20,8 @@ Resources:
         ContainerPort: 5000
       NetworkConfiguration:
         AwsvpcConfiguration:
-          Subnets: ["subnet-093680dced0adfa3a", "subnet-05d321769ba6395e8"]
-          SecurityGroups: ["sg-0d5dd6502277d5724"]
+          Subnets: ["subnet-0d6e3204117daa85e", "subnet-062f87d0cfba1b2f0"]
+          SecurityGroups: ["sg-0f31a62ffed0fbf3d"]
           # AssignPublicIp: "ENABLED"
 
 
